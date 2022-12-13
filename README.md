@@ -4,10 +4,10 @@ MPCService allows deploying a multi-party computation service. It implements Go 
 play a role of an MPC node, or a data provider able to participate in an MPC protocol evaluating a
 function in a privacy-preserving way. Moreover, a manager (meeting point) of the service is implemented,
 providing a web interface for requesting computations and handling connections between data providers
-and MPC nodes. The manager serves purely as a connector and an interface and has no access to the data.
+and MPC nodes. The manager serves purely as a connector and an interface, and has no access to the data.
 
 The service needs minimal effort to be deployed (not only locally, but also over WAN), since it is
-fully dockerized. It tries to be as close as possible to a system that would be deployed in production.
+fully dockerized.
 It uses [SCALE-MAMBA](https://github.com/KULeuven-COSIC/SCALE-MAMBA) as the underlying MPC library.
 
 <!-- toc -->
@@ -30,8 +30,8 @@ Git clone the repository and navigate yourself in `local_test` folder. Assuming 
 
 ````docker-compose up````
 
-After the docker images are built (this may take a while, mostly due to installing SCALE-MAMBA and
-dependencies) the service will locally deploy 4 MPC nodes, a data provider and a manager. Use your
+After the docker images are built (this may take a while, mostly due to the installation of SCALE-MAMBA and
+its dependencies) the service will locally deploy 4 MPC nodes, a data provider, and a manager. Use your
 web browser to navigate yourself to [http://localhost:4100](http://localhost:4100).
 
 Use the provided GUI to request a privacy-preserving computation using MPC.
@@ -40,8 +40,8 @@ Use the provided GUI to request a privacy-preserving computation using MPC.
 
 ## Deploying an MPC service with decentralized MPC nodes, data providers, and a manager with GUI
 
-The software is preferred to be run in docker containers. To run it directly from Go code
-check dockerfiles in folders `mpc_node`, `data_provider`, and `manager` to see how to install
+The software is preferred to be run in docker containers, see the below explanations. Optionally, to run it directly from Go code
+check the dockerfiles in folders `mpc_node`, `data_provider`, and `manager` to see how to install
 and set up SCALE-MAMBA (and its dependencies) to be compatible with MPCService.
 
 ### Connectivity requirements
@@ -53,12 +53,12 @@ with an address and two open ports is needed.
 
 ### Access and identity management
 To manage who can participate in the system, SSL certificates should be created for each participating
-service. For example, you can use [certstrap](https://github.com/square/certstrap) (or other tool). Create 
+service. For example, you can use [certstrap](https://github.com/square/certstrap) (or other similar tools). Create 
 a Certificate Authority:
 
 ``./certstrap init --common-name "RootCA"``
 
-For the manager create a key, request a  and sign them (domain should be the address where the manager will be reachable):
+Create a private key and a signed certificate of the manager by the following (the domain should be the address where the manager will be reachable):
 
 ```
 ./certstrap request-cert --common-name manager -domain managers.domain.com
@@ -114,7 +114,7 @@ MANAGER_ADDRESS=kraken.xlab.si:4001
 
 An MPC node should have a certificate signed by the certificate authority in which the common name
 is specified and should match NODE_NAME. Name the certificate and the secret key with NODE_NAME, for
-example `SuperMPCNode.crt` and `SuperMPCNode.key`, respectively, and place them into folder 
+example `SuperMPCNode.crt` and `SuperMPCNode.key`, respectively, and place them into the folder 
 `key_management/keys_certificates`. Place also the certificate
 of the certificate authority in the same folder named as `RootCA.crt`.
 
@@ -132,8 +132,8 @@ in the main repository. Check on the manager's GUI if the node is connected to t
 The system is designed to work with datasets in CSV format. The assumption is that a dataset
 is given in a file ending with `.csv`: in the first row the names of the columns should be given
 while all the other fields should be numerical values. See
-`data_provider/datasets/breast_canser_dataset.csv` for an example. MPC nodes can compute on one
-dataset or join multiple ones without knowing the data in plaintext.  
+`data_provider/datasets/breast_canser_dataset.csv` for an example. The MPC nodes can compute on one
+dataset or join multiple ones, without knowing the data in plaintext.  
 
 
 Datasets that MPC nodes can use, can be provided in two ways:
@@ -154,8 +154,7 @@ Specify in the `.env` file in the MPCService repository the following two parame
 of the data provider, `MANAGER_ADDRESS` is the
 address and port to reach the manager, and `SHARE_WITH` specifies the names of the MPC nodes
 with which the dataset provider is willing to share (encrypted parts) of its data
-(one can set it to `all`) 
-. For example
+(one can set it to `all`). For example
 ````
 DATA_PROVIDER_NAME=SuperDataProvider
 MANAGER_ADDRESS=kraken.xlab.si:4001
@@ -183,13 +182,14 @@ in the main repository. Check in the browser on the manager's address if the dat
 ## Requesting computations and the MPC protocol
 
 After all the MPC nodes and data providers have been connected to the manager, one can use its GUI
-to request MPC computation and receive CSV files with computation results. The GUI should be available
+to request MPC computations and receive CSV files with the computation results. The GUI should be available
 at http://manager_address:GUI_PORT that was specified before.
 
 #### Functions
 We have provided a couple
 of simple functions that can be used: average (computing the average of the columns), statistics
-(computing basis statistical values of the columns of the selected datasets) and linear regression.
+(computing basis statistical values of the columns of the selected datasets) and k-means (a basis
+unsupervised learning algorithm giving centers of clusters in data).
 More functions can be added. In folder `computation/scale_files/MPCService/function` you can add additional
 functions that need to be written in MAMBA language (see [SCALE-MAMBA](https://github.com/KULeuven-COSIC/SCALE-MAMBA)
 documentation), see also the provided examples.
@@ -197,7 +197,7 @@ documentation), see also the provided examples.
 
 #### MPC protocol
 Currently, the system is predefined to use exactly 3 nodes to evaluate an MPC computation using
-a maliciously secure Shamir secret sharing based MPC protocol, in which the security assumption is
+a maliciously secure Shamir secret sharing based MPC protocol, in which the security assumption is that
 the majority of nodes are not corrupted (at most one can be corrupted to guarantee the privacy of the
 data). Since SCALE-MAMBA supports also other protocols and more nodes, the software can be 
 modified/upgraded to different protocols with a bit of work.
@@ -225,7 +225,7 @@ tools on the quality of it.
 
 ### Contributions
 
-We are more than happy to accept improvements of the code. Please open a Pull Request. 
+We are more than happy to accept improvements of the code. Please open a Pull Request or an Issue to report a bug.
 
 
 ### License
