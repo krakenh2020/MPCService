@@ -1,0 +1,29 @@
+from Compiler import input_output
+
+l = LEN
+dim = [LEN / COLS, COLS]
+
+def maxval(M):
+    cols = len(M[0])
+    rows = len(M)
+    # m = [x for x in M[0]]
+    m = sfix.Array(cols)
+    @for_range(cols)
+    def g(j):
+        m[j] = M[0][j]
+
+    @for_range(rows)
+    def f(i):
+        @for_range(cols)
+        def g(j):
+            # print_ln('in  %s %s %s %s',i, j, m[j].reveal(), M[i][j].reveal())
+            c = m[j] < M[i][j]
+            # print_ln('in %s', c.reveal())
+            m[j] = m[j] * (1 - c) + M[i][j] * c
+            # print_ln('new %s %s', m[j].reveal(), M[i][j].reveal())
+
+    return m
+
+X = input_output.load_sfix_matrix(dim[0], dim[1])
+res = maxval(X)
+input_output.output_sfix_array(res)

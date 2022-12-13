@@ -1,0 +1,130 @@
+name: Buid and test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.17.3
+
+#       - name: apt update
+#        run: sudo apt update --fix-missing
+
+#      - name: apt-get upgrade
+#        run: sudo ACCEPT_EULA=Y apt-get upgrade -y
+
+      - name: Apt install
+        run: sudo apt install -y git yasm python gcc g++ cmake make curl wget apt-transport-https m4 zip unzip build-essential
+
+#      # Setup to use wasm tests
+#      - name: Setup PATH for wasm
+#        run: echo "${{env.GOROOT}}/misc/wasm" >> $GITHUB_PATH
+
+      # install MPIR
+      - name: Install MPIR
+        run: |
+          echo $PWD
+          mkdir /home/runner/work/MPCService/local
+          cd ../local
+          curl -O 'http://mpir.org/mpir-3.0.0.tar.bz2'
+          tar xf mpir-3.0.0.tar.bz2
+          cd mpir-3.0.0 && ./configure --enable-cxx --prefix="/home/runner/work/MPCService/local/mpir" && make && make check && make install
+
+      # install OpenSSL 1.1.0
+      - name: Install OpenSSL 1.1.0
+        run: |
+          cd ../local
+          curl -O https://www.openssl.org/source/old/1.1.1/openssl-1.1.1e.tar.gz
+          tar -xf openssl-1.1.1e.tar.gz
+          cd openssl-1.1.1e && ./config --prefix="/home/runner/work/MPCService/local/openssl"
+          make && make install
+
+      # install crypto++
+      - name: Install crypto++
+        run: |
+          cd ../local
+          curl -v --max-time 5 -O https://www.cryptopp.com/cryptopp800.zip
+          unzip cryptopp800.zip -d cryptopp800
+          cd cryptopp800 && make && make install PREFIX="/home/runner/work/MPCService/local/cryptopp"
+
+      # Install SCALE-MAMBA
+      - name: Install SCALE-MAMBA
+        run: |
+          export PATH="/home/runner/work/MPCService/local/openssl/bin/:${PATH}"
+          export C_INCLUDE_PATH="/home/runner/work/MPCService/local/openssl/include/:${C_INCLUDE_PATH}"
+          export CPLUS_INCLUDE_PATH="/home/runner/work/MPCService/local/openssl/include/:${CPLUS_INCLUDE_PATH}"
+          export LIBRARY_PATH="/home/runner/work/MPCService/local/openssl/lib/:${LIBRARY_PATH}"
+          export LD_LIBRARY_PATH="/home/runner/work/MPCService/local/openssl/lib/:${LD_LIBRARY_PATH}"
+          export C_INCLUDE_PATH="/home/runner/work/MPCService/local/mpir/include/:${C_INCLUDE_PATH}"
+          export CPLUS_INCLUDE_PATH="/home/runner/work/MPCService/local/mpir/include/:${CPLUS_INCLUDE_PATH}"
+          export LIBRARY_PATH="/home/runner/work/MPCService/local/mpir/lib/:${LIBRARY_PATH}"
+          export LD_LIBRARY_PATH="/home/runner/work/MPCService/local/mpir/lib/:${LD_LIBRARY_PATH}"
+          export CPLUS_INCLUDE_PATH="/home/runner/work/MPCService/local/cryptopp/include/:${CPLUS_INCLUDE_PATH}"
+          export LIBRARY_PATH="/home/runner/work/MPCService/local/cryptopp/lib/:${LIBRARY_PATH}"
+          export LD_LIBRARY_PATH="/home/runner/work/MPCService/local/cryptopp/lib/:${LD_LIBRARY_PATH}"
+          cd ../local
+          git clone https://github.com/KULeuven-COSIC/SCALE-MAMBA.git
+          cd SCALE-MAMBA
+          cp CONFIG CONFIG.mine
+          echo 'ROOT = /home/runner/work/MPCService/local/SCALE-MAMBA' >> CONFIG.mine
+          echo 'OSSL = /home/runner/work/MPCService/local/openssl' >> CONFIG.mine
+          cp Auto-Test-Data/1/* Data/
+          cp ../../MPCService/computation/scale_files/Input_Output_Simple.cpp ./src/Input_Output/Input_Output_Simple.cpp
+          cp ../../MPCService/computation/scale_files/Input_Output_Simple.h ./src/Input_Output/Input_Output_Simple.h
+          cp ../../MPCService/computation/scale_files/Input_Output_Base.h ./src/Input_Output/Input_Output_Base.h
+          cp ../../MPCService/computation/scale_files/IO.h ./src/Input_Output/IO.h
+          sed -i s/input\_share\(Proc\.read\_Ri\(r.0.\)/input_share\(Proc\.read\_Ri\(r\[0\]\),\ P.whoami\(\)/g ./src/Processor/Instruction.cpp
+          rm ./src/Input_Output/Input_Output_C.h
+          rm ./src/Input_Output/Input_Output_C.cpp
+          rm ./src/Input_Output/Input_Output_Test.cpp
+          rm ./src/Input_Output/Input_Output_Test.h
+          cp ../../MPCService/computation/scale_files/input_output.py ./Compiler/input_output.py
+          cp ../../MPCService/computation/scale_files/lin_alg.py ./Compiler/lin_alg.py
+          cp -r ../../MPCService/computation/scale_files/MPCService ./Programs
+          cp -r ../../MPCService/computation/scale_files/Input ./Input
+          make progs
+
+      - name: Set up MAMBA
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
+          export PATH="/root/.cargo/bin:${PATH}"d
+          cd ../local/SCALE-MAMBA
+          ./compile.sh Programs/tutorial/
+
+      - name: Build
+        run: go build -v
+
+      - name: Test
+        run: |
+          export PATH="/home/runner/work/MPCService/local/openssl/bin/:${PATH}"
+          export C_INCLUDE_PATH="/home/runner/work/MPCService/local/openssl/include/:${C_INCLUDE_PATH}"
+          export CPLUS_INCLUDE_PATH="/home/runner/work/MPCService/local/openssl/include/:${CPLUS_INCLUDE_PATH}"
+          export LIBRARY_PATH="/home/runner/work/MPCService/local/openssl/lib/:${LIBRARY_PATH}"
+          export LD_LIBRARY_PATH="/home/runner/work/MPCService/local/openssl/lib/:${LD_LIBRARY_PATH}"
+          export C_INCLUDE_PATH="/home/runner/work/MPCService/local/mpir/include/:${C_INCLUDE_PATH}"
+          export CPLUS_INCLUDE_PATH="/home/runner/work/MPCService/local/mpir/include/:${CPLUS_INCLUDE_PATH}"
+          export LIBRARY_PATH="/home/runner/work/MPCService/local/mpir/lib/:${LIBRARY_PATH}"
+          export LD_LIBRARY_PATH="/home/runner/work/MPCService/local/mpir/lib/:${LD_LIBRARY_PATH}"
+          export CPLUS_INCLUDE_PATH="/home/runner/work/MPCService/local/cryptopp/include/:${CPLUS_INCLUDE_PATH}"
+          export LIBRARY_PATH="/home/runner/work/MPCService/local/cryptopp/lib/:${LIBRARY_PATH}"
+          export LD_LIBRARY_PATH="/home/runner/work/MPCService/local/cryptopp/lib/:${LD_LIBRARY_PATH}"
+          export SCALE_MAMBA_PATH="/home/runner/work/MPCService/local/SCALE-MAMBA"
+          go test -v ./computation/...
+          go test -v ./data_management/...
+          go test -v ./data_provider/...
+          go test -v ./key_management/...
+          go test -v ./manager/...
+          go test -v ./mpc_engine/...
+          go test -v ./mpc_node/...

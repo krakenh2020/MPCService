@@ -1,0 +1,3 @@
+# Place here the chosen parameters instead of specifying them in a command line
+name: "Ljubljana_node"
+logLevel: "info"

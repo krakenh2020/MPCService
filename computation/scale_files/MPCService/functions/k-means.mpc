@@ -1,0 +1,69 @@
+from Compiler import input_output
+from Compiler import mpc_math
+from Compiler import lin_alg
+from random import randint
+
+# it assumes the input is a matrix
+l = LEN
+dim = [LEN / COLS, COLS]
+iterations = 10
+k = NUM_CLUSTERS
+rand_index = []
+for i in range(k):
+    rand_index.append(randint(0,dim[0]-1))
+
+
+def kmeans(M):
+    km = sfix.Matrix(k, dim[1])
+    for i in range(k):
+        @for_range(dim[1])
+        def f(j):
+            km[i][j] = M[rand_index[i]][j]
+
+    indicators = lin_alg.constant_matrix(dim[0], k, 0)
+    zeros = lin_alg.constant_vector(k, 0)
+    ind_sum = lin_alg.constant_vector(k, 0)
+
+    @for_range(iterations)
+    def g(i):
+        @for_range(dim[0])
+        def h(m):
+            x = lin_alg.vector_minus(M[m], km[0])
+            min = sfix.Array(1)
+            min[0] = lin_alg.norm_vec(x)
+            indicators[m][0] = sfix(1)
+            @for_range(1,k)
+            def f(j):
+                x = lin_alg.vector_minus(M[m], km[j])
+                z = lin_alg.norm_vec(x)
+                c = z < min[0]
+                min[0] = c * z + (1-c) * min[0]
+                ind = lin_alg.vector_add(lin_alg.vec_mul_scalar(zeros, c), lin_alg.vec_mul_scalar(indicators[m], (1 - c)))
+                ind[j] = c * sfix(1)
+                lin_alg.matrix_assign_row(indicators, ind, m)
+
+        km_sum = lin_alg.constant_matrix(k, dim[1], 0)
+
+        @for_range(k)
+        def f(j):
+            ind_sum[j] = sfix(0)
+            @for_range(dim[0])
+            def h(m):
+                x = lin_alg.vec_mul_scalar(M[m], indicators[m][j])
+                y = lin_alg.vector_add(km_sum[j], x)
+                lin_alg.matrix_assign_row(km_sum, y, j)
+                ind_sum[j] = ind_sum[j] + indicators[m][j]
+
+
+        @for_range(k)
+        def g(m):
+            @for_range(dim[1])
+            def f(j):
+                km[m][j] = km_sum[m][j] / ind_sum[m]
+    return km, ind_sum
+
+
+X = input_output.load_sfix_matrix(dim[0], dim[1])
+res, sum = kmeans(X)
+input_output.output_sfix_matrix(res)
+input_output.output_sfix_array(sum)

@@ -1,0 +1,44 @@
+from Compiler import input_output
+from Compiler import mpc_math
+from Compiler import lin_alg
+
+# it assumes the input is a matrix
+l = LEN
+dim = [LEN / COLS, COLS]
+
+def stats(mat):
+    # average, standard deviation, min, max
+    num_stats = 4
+    m = lin_alg.constant_matrix(dim[1], num_stats, 0)
+
+    # set starting min, max
+    @for_range(dim[1])
+    def g(j):
+        m[j][2] = mat[0][j]
+        m[j][3] = mat[0][j]
+    
+    @for_range(dim[1])
+    def g(j):
+        @for_range(dim[0])
+        def f(i):
+            # min
+            c = m[j][2] < mat[i][j]
+            m[j][2] = m[j][2] * c + mat[i][j] * (1 - c)
+            # max
+            c = m[j][3] < mat[i][j]
+            m[j][3] = m[j][3] * (1 - c) + mat[i][j] * c
+            # avg
+            m[j][0] = m[j][0] + mat[i][j]
+        m[j][0] = m[j][0] / dim[0]
+        @for_range(dim[0])
+        def f(i):
+            # variance
+            m[j][1] = m[j][1] + (mat[i][j] - m[j][0])**2
+        m[j][1] = m[j][1] / dim[0]
+        m[j][1] = mpc_math.sqrt(m[j][1])
+
+    return m
+
+X = input_output.load_sfix_matrix(dim[0], dim[1])
+res = stats(X)
+input_output.output_sfix_matrix(res)

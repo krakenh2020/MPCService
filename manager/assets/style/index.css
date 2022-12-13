@@ -1,0 +1,282 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+.page-wrap {
+  width: 1920px;
+  display: block;
+  margin: 0 auto;
+}
+.page-wrap .header-outer-wrap {
+  background: linear-gradient(to right, #0099e6, #0063ad);
+}
+.page-wrap .header-outer-wrap .header-wrap {
+  height: 330px;
+  display: flex;
+  align-items: center;
+  width: 1638px;
+  margin: 0 auto;
+}
+.page-wrap .header-outer-wrap .header-wrap h1 {
+  font-size: 60px;
+  font-family: "Roboto", sans-serif;
+  color: white;
+  width: 900px;
+  font-size: 80px;
+}
+.page-wrap .caption-text-wrap {
+  min-height: 491px;
+  height: auto;
+  padding-top: 50px;
+  padding-bottom: 85px;
+  background: white;
+  width: 1638px;
+  margin: 0 auto;
+}
+.page-wrap .caption-text-wrap h2 {
+  width: 608px;
+  display: flex;
+  align-items: center;
+  font-size: 50px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  font-weight: bold;
+  margin-bottom: 39px;
+}
+.page-wrap .caption-text-wrap p {
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  margin-top: 41px;
+}
+.page-wrap .node-outer-wrap {
+  background: #fafafa;
+  padding-top: 50px;
+  padding-bottom: 60px;
+  height: auto;
+}
+.page-wrap .node-outer-wrap .node-wrap {
+  width: 1638px;
+  margin: 0 auto;
+}
+.page-wrap .node-outer-wrap .node-wrap h2 {
+  font-size: 50px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  margin-bottom: 39px;
+}
+.page-wrap .node-outer-wrap .node-wrap .available-detaset {
+  font-size: 30px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  font-weight: normal;
+  margin-bottom: 27px;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap {
+  margin-top: 25px;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap h4 {
+  margin-bottom: 27px;
+  font-size: 30px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  font-weight: normal;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .dataset-description {
+  margin-top: 27px;
+  margin-bottom: 37px;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .file-select-wrap {
+  width: 553px;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .file-select-wrap input::file-selector-button {
+  color: #707070;
+  border: 1px solid #707070;
+  border-radius: 8px;
+  background: #ffffff;
+  height: 43px;
+  width: 120px;
+  font-style: italic;
+  margin-right: 33px;
+  cursor: pointer;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .file-select-wrap input[type=file] {
+  width: 100%;
+  font-style: italic;
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  cursor: pointer;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .file-select-wrap .under-line {
+  background-color: #707070;
+  height: 1px;
+  position: relative;
+  bottom: -1px;
+  right: -152px;
+  width: 60%;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .file-select-wrap .enc-btn-wrap {
+  margin-top: 41px;
+  margin-bottom: 53px;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .file-select-wrap .enc-btn-wrap .enc-button {
+  height: 43px;
+  background: #000000;
+  border-radius: 9px;
+  color: white !important;
+  padding: 10px 13px;
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .upload-wrap p {
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  margin-bottom: 27px;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .upload-wrap .detaset-wrap {
+  display: flex;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .upload-wrap .detaset-wrap .dataset-name,
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .upload-wrap .detaset-wrap .dataset-link {
+  margin-bottom: 25px;
+  width: 116px;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .upload-wrap .detaset-wrap input {
+  width: 434px;
+  background: #ffffff;
+  border: 1px solid #707070;
+  border-radius: 6px;
+  margin-left: 30px;
+  height: 24px;
+  padding-right: 4px;
+  padding-left: 4px;
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+}
+.page-wrap .node-outer-wrap .node-wrap .add-detaset-wrap .upload-wrap .detaset-wrap input:focus-visible {
+  outline: none;
+}
+.page-wrap .request-mpc-wrap {
+  padding: 50px 0 169px 0px;
+  background: #ffffff;
+  width: 1638px;
+  margin: 0 auto;
+}
+.page-wrap .request-mpc-wrap h2 {
+  font-size: 50px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  margin-bottom: 41px;
+}
+.page-wrap .request-mpc-wrap p {
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+}
+.page-wrap .request-mpc-wrap .nodes-select-outer-wrap {
+  margin-top: 32px;
+}
+.page-wrap .request-mpc-wrap .nodes-select-outer-wrap .node-select-wrap {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+}
+.page-wrap .request-mpc-wrap .nodes-select-outer-wrap .node-select-wrap input {
+  margin-right: 28px;
+  height: 19px;
+  width: 19px;
+  border: 1px solid #707070;
+  border-radius: 3px;
+}
+.page-wrap .request-mpc-wrap .nodes-select-outer-wrap .node-select-wrap .num_clusters {
+  width: 176px;
+  height: 24px;
+  border: 1px solid #707070;
+  border-radius: 6px;
+  margin-left: 6px;
+  margin-right: 4px;
+  outline: none;
+  padding: 0 4px;
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+}
+.page-wrap .request-mpc-wrap .nodes-select-outer-wrap .request-btn {
+  margin-top: 37px;
+  height: 43px;
+  background: #000000;
+  border-radius: 9px;
+  color: white !important;
+  padding: 10px 13px;
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+}
+.page-wrap .request-mpc-wrap .nodes-select-outer-wrap .error-msg {
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  margin-top: 15px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.datasets {
+  width: 990px;
+}
+.datasets thead {
+  border: none;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  border-bottom: 15px solid transparent;
+}
+.datasets thead tr th {
+  font-weight: bold;
+  text-align: left;
+  padding-left: 26px;
+  line-height: 26px;
+}
+.datasets thead tr th:first-child {
+  width: 76px;
+  overflow: hidden;
+}
+.datasets tbody {
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1607843137);
+}
+.datasets tbody tr {
+  background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1607843137);
+}
+.datasets tbody tr td {
+  padding: 12px 27px;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  color: #707070;
+  background: white;
+  border-radius: 10px;
+}
+.datasets tbody tr td input {
+  width: 19px;
+  height: 19px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #707070;
+  border-radius: 3px;
+}
+
+/*# sourceMappingURL=index.css.map */

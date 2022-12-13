@@ -1,0 +1,24 @@
+from Compiler import input_output
+from Compiler import lin_alg
+
+l = LEN
+dim = [LEN / COLS, COLS]
+
+def average(M):
+    cols = len(M[0])
+    rows = len(M)
+    avg = lin_alg.constant_vector(cols, 0)
+    @for_range(rows)
+    def f(i):
+        @for_range(cols)
+        def g(j):
+            avg[j] = avg[j] + M[i][j]
+
+    @for_range(cols)
+    def g(j):
+        avg[j] = avg[j] / rows
+    return avg
+
+X = input_output.load_sfix_matrix(dim[0], dim[1])
+res = average(X)
+input_output.output_sfix_array(res)

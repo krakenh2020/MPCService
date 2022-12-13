@@ -1,0 +1,296 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+$font-color: #707070;
+$font-family: "Roboto", sans-serif;
+$primary-font-size: 50px;
+$secondary-font-size: 20px;
+$slim-font-size: 30px;
+
+@mixin text($size, $fontFamliy) {
+  font-size: $size;
+  font-family: $fontFamliy;
+  color: $font-color;
+}
+
+@mixin container {
+  width: 1638px;
+  margin: 0 auto;
+}
+
+.page-wrap {
+  width: 1920px;
+  display: block;
+  margin: 0 auto;
+
+  .header-outer-wrap {
+    background: linear-gradient(to right, #0099e6, #0063ad);
+    .header-wrap {
+      height: 330px;
+      display: flex;
+      align-items: center;
+      @include container;
+
+      h1 {
+        font-size: 60px;
+        font-family: $font-family;
+        color: white;
+        width: 900px;
+        font-size: 80px;
+      }
+    }
+  }
+
+  .caption-text-wrap {
+    min-height: 491px;
+    height: auto;
+    padding-top: 50px;
+    padding-bottom: 85px;
+    background: white;
+    @include container;
+
+    h2 {
+      width: 608px;
+      display: flex;
+      align-items: center;
+      @include text($primary-font-size, $font-family);
+      font-weight: bold;
+      margin-bottom: 39px;
+    }
+    p {
+      @include text($secondary-font-size, $font-family);
+      margin-top: 41px;
+    }
+  }
+
+  .node-outer-wrap {
+    background: #fafafa;
+    padding-top: 50px;
+    padding-bottom: 60px;
+    height: auto;
+
+    .node-wrap {
+      @include container;
+
+      h2 {
+        @include text($primary-font-size, $font-family);
+        margin-bottom: 39px;
+      }
+
+      .available-detaset {
+        @include text($slim-font-size, $font-family);
+        font-weight: normal;
+        margin-bottom: 27px;
+      }
+
+      .add-detaset-wrap {
+        margin-top: 25px;
+
+        h4 {
+          margin-bottom: 27px;
+          @include text(30px, $font-family);
+          font-weight: normal;
+        }
+
+        .dataset-description {
+          margin-top: 27px;
+          margin-bottom: 37px;
+          @include text($secondary-font-size, $font-family);
+        }
+
+        .file-select-wrap {
+          width: 553px;
+
+          input::file-selector-button {
+            color: #707070;
+            border: 1px solid #707070;
+            border-radius: 8px;
+            background: #ffffff;
+            height: 43px;
+            width: 120px;
+            font-style: italic;
+            margin-right: 33px;
+            cursor: pointer;
+          }
+
+          input[type="file"] {
+            width: 100%;
+            font-style: italic;
+            @include text(18px, $font-family);
+            cursor: pointer;
+          }
+
+          .under-line {
+            background-color: #707070;
+            height: 1px;
+            position: relative;
+            bottom: -1px;
+            right: -152px;
+            width: 60%;
+          }
+
+          .enc-btn-wrap {
+            margin-top: 41px;
+            margin-bottom: 53px;
+            .enc-button {
+              height: 43px;
+              background: #000000;
+              border-radius: 9px;
+              color: white !important;
+              padding: 10px 13px;
+              @include text(18px, $font-family);
+            }
+          }
+        }
+
+        .upload-wrap {
+          p {
+            @include text(18px, $font-family);
+            margin-bottom: 27px;
+          }
+
+          .detaset-wrap {
+            display: flex;
+
+            .dataset-name,
+            .dataset-link {
+              margin-bottom: 25px;
+              width: 116px;
+            }
+            input {
+              width: 434px;
+              background: #ffffff;
+              border: 1px solid #707070;
+              border-radius: 6px;
+              margin-left: 30px;
+              height: 24px;
+              padding-right: 4px;
+              padding-left: 4px;
+              @include text(18px, $font-family);
+
+              &:focus-visible {
+                outline: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .request-mpc-wrap {
+    padding: 50px 0 169px 0px;
+    background: #ffffff;
+    @include container;
+
+    h2 {
+      @include text($primary-font-size, $font-family);
+      margin-bottom: 41px;
+    }
+    p {
+      @include text(18px, $font-family);
+    }
+
+    .nodes-select-outer-wrap {
+      margin-top: 32px;
+
+      .node-select-wrap {
+        margin-bottom: 16px;
+        @include text($secondary-font-size, $font-family);
+
+        input {
+          margin-right: 28px;
+          height: 19px;
+          width: 19px;
+          border: 1px solid #707070;
+          border-radius: 3px;
+        }
+
+        .num_clusters {
+          width: 176px;
+          height: 24px;
+          border: 1px solid #707070;
+          border-radius: 6px;
+          margin-left: 6px;
+          margin-right: 4px;
+          outline: none;
+          padding: 0 4px;
+          @include text(18px, $font-family);
+        }
+      }
+      .request-btn {
+        margin-top: 37px;
+        height: 43px;
+        background: #000000;
+        border-radius: 9px;
+        color: white !important;
+        padding: 10px 13px;
+        @include text(18px, $font-family);
+      }
+
+      .error-msg {
+        @include text(18px, $font-family);
+        margin-top: 15px;
+      }
+    }
+  }
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.datasets {
+  width: 990px;
+
+  thead {
+    border: none;
+    @include text($secondary-font-size, $font-family);
+    border-bottom: 15px solid transparent;
+
+    tr {
+      th {
+        font-weight: bold;
+        text-align: left;
+        padding-left: 26px;
+        line-height: 26px;
+
+        &:first-child {
+          width: 76px;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+
+  tbody {
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px #00000029;
+
+    tr {
+      background: transparent;
+      border-bottom: 1px solid #00000029;
+
+      td {
+        padding: 12px 27px;
+        @include text($secondary-font-size, $font-family);
+        background: white;
+        border-radius: 10px;
+
+        input {
+          width: 19px;
+          height: 19px;
+          background: #ffffff 0% 0% no-repeat padding-box;
+          border: 1px solid #707070;
+          border-radius: 3px;
+        }
+      }
+    }
+  }
+}

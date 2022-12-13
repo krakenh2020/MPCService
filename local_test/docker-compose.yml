@@ -1,0 +1,70 @@
+version: "3"
+
+services:
+  manager_test:
+    container_name: manager_test
+    build:
+      context: ..
+      dockerfile: ./manager/Dockerfile
+
+    command: ["manager", "start", "-guiPort", "4100", "-managerPort", "4101", "-logLevel", "info"]
+    ports:
+      - "4100:4100"
+    restart: always
+
+  data_provider:
+    container_name: data_provider_test
+    build:
+      context: ..
+      dockerfile: ./data_provider/Dockerfile
+
+    command: ["data_provider", "start", "-name", "Data_provider1", "-logLevel", "info", "-manAddr", "manager_test:4101"]
+    restart: always
+    depends_on:
+      - manager_test
+
+  mpc_node_test1:
+    container_name: mpc_node_test1
+    build:
+      context: ..
+      dockerfile: ./mpc_node/Dockerfile
+
+    command: [ "mpc_node", "start", "-name", "Berlin_node", "-scalePort", "4102", "-logLevel", "info",
+               "-manAddr", "manager_test:4101", "-nodeAddr", "mpc_node_test1"]
+    restart: always
+    depends_on:
+      - manager_test
+
+  mpc_node_test2:
+    container_name: mpc_node_test2
+    build:
+      context: ..
+      dockerfile: ./mpc_node/Dockerfile
+    command: [ "mpc_node", "start", "-name", "Paris_node", "-scalePort", "4103", "-logLevel", "info",
+               "-manAddr", "manager_test:4101", "-nodeAddr", "mpc_node_test2"]
+    restart: always
+    depends_on:
+      - manager_test
+  mpc_node_test3:
+    container_name: mpc_node_test3
+    build:
+      context: ..
+      dockerfile: ./mpc_node/Dockerfile
+
+    command: [ "mpc_node", "start", "-name", "Ljubljana_node", "-scalePort", "4104", "-logLevel", "info",
+               "-manAddr", "manager_test:4101", "-nodeAddr", "mpc_node_test3"]
+    restart: always
+    depends_on:
+      - manager_test
+
+  mpc_node_test4:
+    container_name: mpc_node_test4
+    build:
+      context: ..
+      dockerfile: ./mpc_node/Dockerfile
+
+    command: [ "mpc_node", "start", "-name", "Rome_node", "-scalePort", "4105", "-logLevel", "info",
+               "-manAddr", "manager_test:4101", "-nodeAddr", "mpc_node_test4"]
+    restart: always
+    depends_on:
+      - manager_test

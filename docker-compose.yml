@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  mpc_node:
+    container_name: mpc_node
+    build:
+      context: .
+      dockerfile: ./mpc_node/Dockerfile
+
+    command: ["mpc_node", "start", "-name", "${NODE_NAME}", "-nodeAddr", "${NODE_ADDRESS}", "-scalePort",
+              "${NODE_PORT}", "-logLevel", "info", "-manAddr", "${MANAGER_ADDRESS}"]
+    ports:
+      - "${NODE_PORT}:${NODE_PORT}"
+    restart: always
+
+  data_provider:
+    container_name: data_provider
+    build:
+      context: .
+      dockerfile: ./data_provider/Dockerfile
+
+    command: ["data_provider", "start", "-name", "${DATA_PROVIDER_NAME}", "-logLevel", "info", "-manAddr",
+              "${MANAGER_ADDRESS}", "-shareWith", "${SHARE_WITH}"]
+    restart: always
+
+  manager:
+    container_name: manager
+    build:
+      context: .
+      dockerfile: ./manager/Dockerfile
+
+    command: ["manager", "start", "-guiPort", "${GUI_PORT}", "-managerPort", "${MANAGER_PORT}", "-logLevel", "info"]
+    ports:
+      - "${MANAGER_PORT}:${MANAGER_PORT}"
+      - "${GUI_PORT}:${GUI_PORT}"
+
+    restart: always
